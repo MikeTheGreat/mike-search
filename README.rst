@@ -1,132 +1,34 @@
 ====================================
- Kill & Mark Things Easily in Emacs
+Search for things using the F2, F3, and F4 keys, all at once
 ====================================
- 
-.. image:: https://travis-ci.org/leoliu/easy-kill.svg?branch=master
-   :target: https://travis-ci.org/leoliu/easy-kill
-   :align: right
-   :alt: Travis CI build status
 
-Provide commands ``easy-kill`` and ``easy-mark`` to let users kill or
-mark things easily.
+Note: while you're welcome to use this, I'm mostly putting this here as part of my switch to using straight.el.
 
-Comments, bug reports and patches are highly appreciated.
-
-easy-kill
+Example of usage:
 ~~~~~~~~~
 
-``easy-kill`` is a drop-in replacement for ``kill-ring-save``. To Use:
-::
+C-<key> to search for a thing at the point AND to save that search string for later use by that same key
 
-   (global-set-key [remap kill-ring-save] 'easy-kill)
+<key> to repeat the search, forwards
 
-After this configuration, ``M-w`` serves as both a command and a
-prefix key for other commands. ``M-w`` alone saves in the order of
-active region, url, email and finally current line (See
-``easy-kill-try-things``). As a prefix key:
+S-<key> to search backwards
 
-#. ``M-w w``: save word at point
-#. ``M-w s``: save sexp at point
-#. ``M-w l``: save list at point (enclosing sexp)
-#. ``M-w d``: save defun at point
-#. ``M-w D``: save current defun name
-#. ``M-w f``: save file at point
-#. ``M-w b``: save ``buffer-file-name`` or ``default-directory``.
-   ``-`` changes the kill to the directory name, ``+`` to full name
-   and ``0`` to basename.
+search strings will be saved across sessions
+*WARNING*: This probably won't work out-of-the-box.  If anyone ever uses this package let me know & I can refactor it for your ease-of-use
 
-The following keys modify the selection:
-
-#. ``@``: append selection to previous kill and exit. For example,
-   ``M-w d @`` will append current function to last kill.
-#. ``C-w``: kill selection and exit
-#. ``+``, ``-`` and ``1..9``: expand/shrink selection
-#. ``0`` shrink the selection to the initial size i.e. before any
-   expansion
-#. ``SPC``: cycle through things in ``easy-kill-alist``
-#. ``C-SPC``: turn selection into an active region
-#. ``C-g``: abort
-#. ``?``: help
-
-For example, ``M-w w`` saves current word, repeat ``w`` to expand the
-kill to include the next word. ``5`` to include the next 5 words etc.
-The other commands also follow this pattern.
-
-``+``/``-`` does expanding/shrinking according to the thing selected.
-So for ``word`` the expansion is word-wise, for ``line`` line-wise,
-for ``list`` or ``sexp``, list-wise.
-
-``list-wise`` expanding/shrinking work well in lispy modes (elisp,
-Common Lisp, Scheme, Clojure etc.), smie-based modes (Prolog, SML,
-Modula2, Shell, Ruby, Octave, CSS, SQL etc.), Org mode, Nxml mode and
-Js2 mode.
-
-To copy the enclosing list in lispy modes, I used to do a lot of
-``C-M-u C-M-SPC M-w``. Now the key sequence is replaced by ``M-w l``
-(save list at point) as shown in `screenshot
-<http://i.imgur.com/8TNgPly.png>`_:
-
-.. figure:: http://i.imgur.com/8TNgPly.png
-   :target: http://i.imgur.com/8TNgPly.png
-   :alt: ``M-w l``
-
-easy-mark
-~~~~~~~~~
-
-``easy-mark`` is similar to ``easy-kill`` but marks the region
-immediately. It can be a handy replacement for ``mark-sexp`` allowing
-``+``/``-`` to do list-wise expanding/shrinking and marks the whole
-sexp even when in the middle of one. ::
-
-   (global-set-key [remap mark-sexp] 'easy-mark)
-
-Install
-~~~~~~~
-
-``easy-kill`` is part of GNU ELPA and is also available on `MELPA
-<https://melpa.org/#/easy-kill>`_.
-
-Extensions
-~~~~~~~~~~
-
-New things can be defined by following package ``thingatpt.el``'s
-convention, or by defining new functions named like
-``easy-kill-on-THING-NAME``. See ``easy-kill-on-buffer-file-name`` and
-``easy-kill-on-url`` for examples.
-
-NEWS
-~~~~
-
-0.9.4
-+++++
-
-#. New user variable ``easy-kill-unhighlight-key``.
-#. key ``D`` selects current defun name.
-#. Key ``SPC`` selects things in ``easy-kill-alist`` in turn.
-
-0.9.3
-+++++
-
-#. Key ``?`` in ``easy-kill`` or ``easy-mark`` prints help info.
-#. ``M-w l`` can select the enclosing string.
-#. ``easy-mark`` learns exchanging point & mark.
-#. Key ``0`` now sets the selection to its initial size before any
-   expansion.
-#. ``M-w l``, ``M-w s`` and list-wise ``+/-`` now work in Org mode.
-
-0.9.2
-+++++
-
-#. ``-`` can move pass the first selection.
-#. ``+``/``-`` on ``sexp`` no longer change ``thing`` to ``list``
-#. Mouse over the selection now shows description.
-#. Echo js2 node name.
-#. Append now uses sensible separator (customisable via
-   ``easy-kill-alist``).
-#. The format of easy-kill-alist has changed. The old ``(CHAR .
-   THING)`` format is still supported but may be removed in future.
-
-Bugs
-~~~~
-
-https://github.com/leoliu/easy-kill/issues
+(use-package mike-search
+  :bind (
+         ("C-<f2>" . search-thing-at-point)
+         ("C-<f3>" . search-thing-at-point)
+         ("C-<f4>" . search-thing-at-point)
+         ("C-<f5>" . search-thing-at-point)
+         ("<f2>" . repeat-search-thing-at-point-forward)
+         ("<f3>" . repeat-search-thing-at-point-forward)
+         ("<f4>" . repeat-search-thing-at-point-forward)
+         ("<f5>" . repeat-search-thing-at-point-forward)
+         ("S-<f2>" . repeat-search-thing-at-point-backward)
+         ("S-<f3>" . repeat-search-thing-at-point-backward)
+         ("S-<f4>" . repeat-search-thing-at-point-backward)
+         ("S-<f5>" . repeat-search-thing-at-point-backward)
+         )
+  )
