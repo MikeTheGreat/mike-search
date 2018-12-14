@@ -1,4 +1,4 @@
-.PHONY: all clean test
+.PHONY: all clean
 
 EMACS = emacs
 
@@ -13,5 +13,5 @@ all: $(ELCFILES)
 clean:
 	@rm -f *.elc
 
-test: all
-	@${EMACS} -batch -L . -l test.el -f ert-run-tests-batch-and-exit
+# test: all
+#	@${EMACS} -batch -L . -l test.el -f ert-run-tests-batch-and-exit
